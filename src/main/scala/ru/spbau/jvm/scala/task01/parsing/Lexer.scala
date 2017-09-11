@@ -64,9 +64,9 @@ final class Lexer(commandsSet: CommandsSet, var str: String) {
       case LexerState.Command =>
         lexemes.add(CommandLexeme(findCommand(substr)))
       case LexerState.OpenBracket =>
-        lexemes.add(OpenBracketLexeme())
+        lexemes.add(OpenBracketLexeme)
       case LexerState.CloseBracket =>
-        lexemes.add(CloseBracketLexeme())
+        lexemes.add(CloseBracketLexeme)
     }
   }
 

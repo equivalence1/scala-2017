@@ -28,7 +28,7 @@ final class Parser {
 
     /* delete surrounding brackets if we have ones */
     val (_, checkR) = getNextExpressionRange(lexemes, l)
-    if (checkR == r && lexemes.get(l).isInstanceOf[OpenBracketLexeme])
+    if (checkR == r && lexemes.get(l) == OpenBracketLexeme)
       return buildAstOnRange(lexemes, l + 1, r - 1)
 
     /* find command with lowest priority and use it as root of AST */
@@ -109,9 +109,9 @@ final class Parser {
   }
 
   private[this] def balanceDiff(lexeme: Lexeme): Int = {
-    if (lexeme.isInstanceOf[OpenBracketLexeme])
+    if (lexeme == OpenBracketLexeme)
       return 1
-    if (lexeme.isInstanceOf[CloseBracketLexeme])
+    if (lexeme == CloseBracketLexeme)
       return -1
     0
   }
