@@ -2,7 +2,7 @@ package ru.spbau.jvm.scala.task01.parsing
 
 import ru.spbau.jvm.scala.task01.commands.AbstractCommand
 
-abstract class AstTree {
+sealed trait AstTree {
   def run(): Double
 }
 
