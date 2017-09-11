@@ -38,6 +38,4 @@ final class Calculator {
     ast.run()
   }
 
-
-
 }
