@@ -1,3 +1,5 @@
+import scala.collection.mutable
+
 trait Token {
   val operation: Char
 }
@@ -13,6 +15,12 @@ case object Minus extends Token {
 val token = new Token {
   override val operation: Char = '?'
 }
+
+val map: mutable.HashMap[Long, Long] = mutable.HashMap.empty
+map.put(1, 2)
+map.put(1, 1)
+
+map.toList
 
 token match {
   case Plus => println("1")
