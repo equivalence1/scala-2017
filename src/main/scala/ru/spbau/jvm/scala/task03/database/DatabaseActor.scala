@@ -35,6 +35,7 @@ class DatabaseActor extends PersistentActor {
     case evt: PersistentEvent => persist(evt)(receiveEvent)
     case GetChannels(id) => sender ! ChannelsList(map.getOrElse(id, mutable.HashSet.empty))
     case GetIds() => sender ! IdList(map.keys.toList)
+    case HasPair(id, name) => sender ! BoolResult(map.contains(id) && map.apply(id).contains(name))
   }
 
 }
@@ -46,7 +47,10 @@ object DatabaseActor {
   case class RemoveChannel(id: Long, name: String) extends PersistentEvent
   case class GetChannels(id: Long)
   case class ChannelsList(list: mutable.HashSet[String])
+
   case class GetIds()
   case class IdList(list: List[Long])
 
+  case class HasPair(id: Long, name: String)
+  case class BoolResult(res: Boolean)
 }

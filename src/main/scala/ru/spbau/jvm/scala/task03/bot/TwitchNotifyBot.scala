@@ -9,7 +9,7 @@ import scala.util.Success
 import info.mukel.telegrambot4s.api.{Polling, TelegramBot}
 import info.mukel.telegrambot4s.api.declarative.Commands
 import info.mukel.telegrambot4s.models.Message
-import ru.spbau.jvm.scala.task03.database.DatabaseActor.{AddChannel, ChannelsList, GetChannels, RemoveChannel}
+import ru.spbau.jvm.scala.task03.database.DatabaseActor._
 
 final class TwitchNotifyBot(val token: String, database: ActorRef) extends TelegramBot with Commands with Polling {
 
@@ -40,8 +40,15 @@ final class TwitchNotifyBot(val token: String, database: ActorRef) extends Teleg
         if (!name.matches("\\w+"))
           reply(s"'$name' is not a valid name for a twitch channel")
         else {
-          database ! RemoveChannel(msg.chat.id, name)
-          reply(s"'$name' channel has been successfully removed from your list")
+          implicit val timeout: Timeout = Timeout(5.second)
+          (database ? HasPair(msg.chat.id, name)).onComplete {
+            case Success(BoolResult(true)) =>
+              database ! RemoveChannel(msg.chat.id, name)
+              reply(s"'$name' channel has been successfully removed from your list")
+            case Success(BoolResult(false)) =>
+              reply(s"'$name' is not in your channel list")
+            case _ => reply("database error")
+          }
         }
       })
     }
@@ -51,7 +58,7 @@ final class TwitchNotifyBot(val token: String, database: ActorRef) extends Teleg
     implicit msg => {
       implicit val timeout: Timeout = Timeout(5.second)
       (database ? GetChannels(msg.chat.id)).onComplete {
-        case Success(ChannelsList(list)) => reply(list.toBuffer.mkString("\n"))
+        case Success(ChannelsList(list)) => reply(list.mkString("\n"))
         case _ => reply("database error")
       }
     }
