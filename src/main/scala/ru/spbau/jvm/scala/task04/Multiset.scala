@@ -21,7 +21,7 @@ abstract class Multiset[+A] {
   }
 
   /*
-   Can not implement normal `apply` here as Multiset because of covariance
+   Can not implement normal `apply` here because Multiset is covariant
    */
   def contains[B >: A](elem: B): Boolean = {
     if (top.equals(elem))
@@ -113,8 +113,7 @@ object Multiset {
   def unapplySeq[A](set: Multiset[A]): Option[Seq[A]] = {
     if (set.equals(Nil))
       return None
-    // With sorting by hashCode it will make it easier to pattern-match (if we are lucky)
-    // E.g. we can match Multiset(1, 2) with Multiset(2, 1)
+    // Make order more predictable, as after or/and/flatMap operations it can be unexpected
     Some(set.toSeq.sortBy(_.hashCode()))
   }
 
