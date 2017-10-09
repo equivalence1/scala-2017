@@ -15,9 +15,6 @@ abstract class Multiset[+A] {
   def top: A
   def bot: Multiset[A]
 
-  val a: List[Int] = List(1, 2 ,3)
-  a.flatMap(_ => List(1, 2))
-
   def +[B >: A](elem: B): Multiset[B] = new Multiset[B] {
     override def top: B = elem
     override def bot: Multiset[B] = Multiset.this
