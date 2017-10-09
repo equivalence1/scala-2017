@@ -11,5 +11,6 @@ libraryDependencies ++= Seq(
   "com.enragedginger" %% "akka-quartz-scheduler" % "1.6.0-akka-2.4.x",
   "org.iq80.leveldb" % "leveldb" % "0.7",
   "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8",
-  "org.scalatest" %% "scalatest" % "3.0.1" % "test"
+  "org.scalatest" %% "scalatest" % "3.0.1" % "test",
+  "com.novocode" % "junit-interface" % "0.11" % "test"
 )
